@@ -8,9 +8,6 @@ import android.hardware.SensorManager;
 import android.os.SystemClock;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HandShakeDetector {
     private SensorManager mgr = null;
     private long lastShakeTimestamp = 0;
@@ -19,7 +16,7 @@ public class HandShakeDetector {
     private long gapTime;
     private HandShakeDetector.Callback cb = null;
 
-    public HandShakeDetector(Context ctxt, double highThresh, double lowThresh,
+    public HandShakeDetector(Context ctxt, double highThresh,
                              long gapTime, HandShakeDetector.Callback cb) {
         this.highThresh = highThresh;
         this.lowThresh = lowThresh;
