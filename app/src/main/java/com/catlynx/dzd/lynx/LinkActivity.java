@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
@@ -116,7 +117,7 @@ public class LinkActivity extends ActionBarActivity {
     private BluetoothSearcher.PairChecker pairChecker = new BluetoothSearcher.PairChecker() {
         @Override
         public boolean checkMates(BluetoothDevice device) {
-            return device.getName() != null && device.getName().equals(BLUETOOTH_HOTNAME);
+            return device.getName() != null && device.getName().contains(BLUETOOTH_HOTNAME);
         }
     };
 
@@ -125,7 +126,7 @@ public class LinkActivity extends ActionBarActivity {
         @Override
         public void shakingStarted() {
             // If not already listening:
-            if (!BluetoothAdapter.getDefaultAdapter().getName().equals(BLUETOOTH_HOTNAME)) {
+            if (!BluetoothAdapter.getDefaultAdapter().getName().contains(BLUETOOTH_HOTNAME)) {
                 Log.d("ui", "Device shaking started...");
                 isShaking = true;
                 btSearcher.startListen();
@@ -142,7 +143,7 @@ public class LinkActivity extends ActionBarActivity {
                     // If is listening and not shaking:
                     if (!isShaking &&
                             BluetoothAdapter.getDefaultAdapter()
-                                    .getName().equals(BLUETOOTH_HOTNAME)) {
+                                    .getName().contains(BLUETOOTH_HOTNAME)) {
                         Log.d("ui", "Stopped shaking...");
                         btSearcher.stopListen();
                         BluetoothAdapter.getDefaultAdapter().setName(BLUETOOTH_COLDNAME);
@@ -182,6 +183,7 @@ public class LinkActivity extends ActionBarActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(getActivity(), "New friends!", Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                 }
             });

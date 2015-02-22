@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -63,6 +64,9 @@ public class LoginActivity extends ActionBarActivity {
                         getActivity().startActivity(intent);
 
                         getActivity().finish();
+                    } else {
+                        Toast.makeText(getActivity(), "Don't leave fields blank!",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });
