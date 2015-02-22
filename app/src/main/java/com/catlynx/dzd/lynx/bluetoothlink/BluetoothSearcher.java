@@ -12,6 +12,8 @@ import android.util.Log;
  * This is the class that will search for the Bluetooth companion.
  */
 public class BluetoothSearcher {
+    private static final int RSSI_THRESHOLD = -65;
+
     private BluetoothAdapter mBluetoothAdapter;
     private Context mContext;
     private BluetoothSearcher.Callback cb;
@@ -76,7 +78,7 @@ public class BluetoothSearcher {
         }
 
         private boolean passesThreshold(short rssi) {
-            return true;
+            return rssi >= RSSI_THRESHOLD;
         }
     };
 
