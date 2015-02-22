@@ -8,8 +8,18 @@
     android:background="@drawable/background"
     android:theme="@android:style/Theme.NoTitleBar"
     tools:context=".MainActivity$PlaceholderFragment">
-
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:paddingTop="15dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textSize="21dp"
+        android:text="Hello, Diane!"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        />
     <ImageButton
+        android:paddingTop="27dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
