@@ -6,27 +6,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
 import com.catlynx.dzd.lynx.bluetoothlink.SocketMessenger;
 import com.catlynx.dzd.lynx.handshakerdetector.HandShakeDetector;
-import android.content.Intent;
-import android.os.Build;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends ActionBarActivity {
-    // Check if the other device is "hot":
-    private BluetoothSearcher.PairChecker pairChecker = new BluetoothSearcher.PairChecker() {
-        @Override
-        public boolean checkMates(BluetoothDevice device) {
-            return device.getName() != null && device.getName().contains("inWatch");
-        }
-    };
+    public static final int REQUEST_DISCOVERABLE = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,22 +34,7 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-        startActivity(discoverableIntent);
-
-        HandShakeDetector detector = new HandShakeDetector(this, 5, 200, null);
-        BluetoothAdapter.getDefaultAdapter().enable();
-
-        SocketMessenger socketMessenger = new SocketMessenger("HELLO", null);
-        BluetoothLinker btLinker = new BluetoothLinker(BluetoothAdapter.getDefaultAdapter(),
-                socketMessenger);
-        BluetoothSearcher btSearcher = new BluetoothSearcher(this,
-                BluetoothAdapter.getDefaultAdapter(), btLinker, pairChecker);
-        btSearcher.startListen();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,11 +58,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void startButton_onClick(View view) {
-        Intent intent = new Intent(this, LinkActivity.class);
-        startActivity(intent);
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -92,7 +70,30 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            ImageButton startButton = (ImageButton) rootView.findViewById(R.id.button_start);
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nextActivity();
+                }
+            });
             return rootView;
+        }
+
+        public void nextActivity() {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3600);
+            startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE);
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == REQUEST_DISCOVERABLE) {
+                if (resultCode == 3600) {
+                    Intent intent = new Intent(getActivity(), LinkActivity.class);
+                    startActivity(intent);
+                }
+            }
         }
     }
 }
