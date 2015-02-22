@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.IOException;
@@ -36,7 +37,8 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
             hostThread.start();
         } else {
             Thread guestThread = new ConnectThread(uuid, mMate);
-            guestThread.start();
+            Thread delayer = new DelayThread(guestThread, 5 * 1000);
+            delayer.start();
         }
     }
 
@@ -123,7 +125,7 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
             // Get a BluetoothSocket to connect with the given BluetoothDevice:
             try {
                 tmp = device.createInsecureRfcommSocketToServiceRecord(uuid);
-            } catch (IOException e) { }
+            } catch (IOException e) {}
             mmSocket = tmp;
         }
 
@@ -150,6 +152,22 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
             try {
                 mmSocket.close();
             } catch (IOException e) {}
+        }
+    }
+
+    // Thread to delay another thread:
+    private class DelayThread extends Thread {
+        private Thread mmThread;
+        private int mmDelay;
+
+        public DelayThread(Thread otherThread, int delay) {
+            mmThread = otherThread;
+            mmDelay = delay;
+        }
+
+        public void run() {
+            SystemClock.sleep(mmDelay);
+            mmThread.start();
         }
     }
 }

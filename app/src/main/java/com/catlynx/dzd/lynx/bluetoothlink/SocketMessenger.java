@@ -73,6 +73,7 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
 
                         mMessageListener.receiveMessage(message);
                         cancel();
+                        return;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
