@@ -31,6 +31,9 @@ public class LinkActivity extends ActionBarActivity {
     private boolean isShaking;
     private String userBluetoothName;
 
+    // Handshake detector:
+    HandShakeDetector mDetector;
+
     // Bluetooth fields:
     private SocketMessenger socketMessenger;
     private BluetoothLinker btLinker;
@@ -46,7 +49,7 @@ public class LinkActivity extends ActionBarActivity {
                     .commit();
         }
 
-        HandShakeDetector detector = new HandShakeDetector(this, 5, 200, shakeCallback);
+        mDetector = new HandShakeDetector(this, 5, 200, shakeCallback);
         BluetoothAdapter.getDefaultAdapter().enable();
 
         isShaking = false;
@@ -58,6 +61,15 @@ public class LinkActivity extends ActionBarActivity {
         btSearcher = new BluetoothSearcher(this,
                 BluetoothAdapter.getDefaultAdapter(), btLinker, pairChecker);
         btLinker.setParentListener(btSearcher.getParentListener());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mDetector.close();
+        btSearcher.kill();
+        socketMessenger.kill();
     }
 
     // Check if the other device is "hot":

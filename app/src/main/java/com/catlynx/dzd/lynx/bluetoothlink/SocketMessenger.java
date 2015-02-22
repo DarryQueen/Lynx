@@ -14,6 +14,8 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
     private String mMessage;
     private SocketMessenger.MessageListener mMessageListener;
 
+    private SocketMessenger.ConnectedThread mConnectedThread = null;
+
     public SocketMessenger(String message, SocketMessenger.MessageListener messageListener) {
         mMessage = message;
         mMessageListener = messageListener;
@@ -21,9 +23,15 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
 
     @Override
     public void manageConnectedSocket(BluetoothSocket socket) {
-        ConnectedThread connectedThread = new ConnectedThread(socket);
-        connectedThread.write(mMessage.getBytes());
-        connectedThread.start();
+        mConnectedThread = new ConnectedThread(socket);
+        mConnectedThread.write(mMessage.getBytes());
+        mConnectedThread.start();
+    }
+
+    public void kill() {
+        if (mConnectedThread != null) {
+            mConnectedThread.cancel();
+        }
     }
 
     public static interface MessageListener {

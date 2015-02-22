@@ -47,7 +47,14 @@ public class BluetoothSearcher {
 
     public void stopListen() {
         Log.d("bluetooth", "Stopping bluetooth search...");
-        mBluetoothAdapter.cancelDiscovery();
+        if (mBluetoothAdapter != null) {
+            mBluetoothAdapter.cancelDiscovery();
+        }
+    }
+
+    public void kill() {
+        mContext.unregisterReceiver(mReceiver);
+        stopListen();
     }
 
     // Create a BroadcastReceiver for when devices are found:
