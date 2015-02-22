@@ -15,12 +15,17 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothDevice mMate;
     private BluetoothLinker.SocketHandler mSocketHandler;
+    private BluetoothLinker.ParentListener mParentListener;
 
     public BluetoothLinker(BluetoothAdapter bluetoothAdapter,
                            BluetoothLinker.SocketHandler socketHandler) {
         mBluetoothAdapter = bluetoothAdapter;
         mMate = null;
         mSocketHandler = socketHandler;
+    }
+
+    public void setParentListener(BluetoothLinker.ParentListener parentListener) {
+        mParentListener = parentListener;
     }
 
     private void startLink() {
@@ -60,6 +65,9 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
     public static interface SocketHandler {
         public void manageConnectedSocket(BluetoothSocket socket);
     }
+    public static interface ParentListener {
+        public void endListen();
+    }
 
     // Thread to execute as host.
     private class AcceptThread extends Thread {
@@ -86,6 +94,7 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
                 if (socket != null) {
                     // Do work to manage the connection in a separate thread:
                     Log.d("bluetooth", "Socket accepted.");
+                    mParentListener.endListen();
                     mSocketHandler.manageConnectedSocket(socket);
                     try {
                         mmServerSocket.close();
@@ -133,6 +142,7 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
 
             // Do work to manage the connection in a separate thread:
             Log.d("bluetooth", "Socket accepted.");
+            mParentListener.endListen();
             mSocketHandler.manageConnectedSocket(mmSocket);
         }
 

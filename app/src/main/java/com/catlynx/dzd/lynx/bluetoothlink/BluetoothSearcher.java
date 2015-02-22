@@ -17,6 +17,13 @@ public class BluetoothSearcher {
     private BluetoothSearcher.Callback cb;
     private BluetoothSearcher.PairChecker pc;
 
+    private BluetoothLinker.ParentListener mParentListener = new BluetoothLinker.ParentListener() {
+        @Override
+        public void endListen() {
+            stopListen();
+        }
+    };
+
     public BluetoothSearcher(Context context, BluetoothAdapter bluetoothAdapter,
                              BluetoothSearcher.Callback cb, BluetoothSearcher.PairChecker pc) {
         this.mBluetoothAdapter = bluetoothAdapter;
@@ -25,8 +32,13 @@ public class BluetoothSearcher {
         this.pc = pc;
     }
 
+    public BluetoothLinker.ParentListener getParentListener() {
+        return mParentListener;
+    }
+
     // Before calling this, make sure discoverable is turned on.
     public void startListen() {
+        Log.d("bluetooth", "Starting bluetooth search...");
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mBluetoothAdapter.cancelDiscovery();
         mBluetoothAdapter.startDiscovery();
@@ -34,8 +46,8 @@ public class BluetoothSearcher {
     }
 
     public void stopListen() {
+        Log.d("bluetooth", "Stopping bluetooth search...");
         mBluetoothAdapter.cancelDiscovery();
-        mContext.unregisterReceiver(mReceiver);
     }
 
     // Create a BroadcastReceiver for when devices are found:
@@ -49,7 +61,6 @@ public class BluetoothSearcher {
                 Log.d("bluetooth", device.getName() + " " + rssi);
                 if (pc.checkMates(device) && passesThreshold(rssi)) {
                     cb.mateFound(device);
-                    stopListen();
                 }
             }
         }

@@ -51,6 +51,7 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
         }
 
         public void run() {
+            Log.d("bluetooth", "Accepted socket, reading message...");
             byte[] buffer = new byte[1024];
             int bytes = 0;
 
@@ -58,20 +59,26 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
             while (true) {
                 try {
                     // Read from the InputStream:
-                    bytes = mmInStream.read(buffer);
+                    bytes = mmInStream.read(buffer, 0, buffer.length);
+                    Log.d("bluetooth", "Read a line of " + bytes);
+
+                    if (bytes > 0) {
+                        String message = new String(buffer, 0, bytes);
+                        Log.d("bluetooth", "Successfully read message \"" + message + "\"");
+                        cancel();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     break;
                 }
             }
-
-            String readMessage = new String(buffer, 0, bytes);
-            Log.d("bluetooth", "Successfully read message \"" + readMessage + "\"");
         }
 
         public void write(byte[] bytes) {
             try {
+                String message = new String(bytes, 0, bytes.length);
                 mmOutStream.write(bytes);
+                Log.d("bluetooth", "Sent the message \"" + message + "\"");
             } catch (IOException e) {}
         }
 
