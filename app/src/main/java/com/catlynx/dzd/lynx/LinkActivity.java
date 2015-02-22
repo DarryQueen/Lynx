@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -166,6 +167,15 @@ public class LinkActivity extends ActionBarActivity {
 
             mListView = (ListView) rootView.findViewById(R.id.listview_mates);
             mListView.setAdapter(mAdapter);
+
+            // Set button behavior:
+            ImageButton button = (ImageButton) rootView.findViewById(R.id.button_finish);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().finish();
+                }
+            });
 
             return rootView;
         }
