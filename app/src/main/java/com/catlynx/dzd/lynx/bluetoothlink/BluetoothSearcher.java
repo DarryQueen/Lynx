@@ -72,6 +72,7 @@ public class BluetoothSearcher {
 
                 Log.d("bluetooth", device.getName() + " " + rssi);
                 if (pc.checkMates(device) && passesThreshold(rssi)) {
+                    Log.d("bluetooth", "Found suitable pair " + device.getName());
                     cb.mateFound(device);
                 }
             }

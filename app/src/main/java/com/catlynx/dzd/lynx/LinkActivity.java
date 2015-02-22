@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -61,6 +62,9 @@ public class LinkActivity extends ActionBarActivity {
                     .add(R.id.container, mFragment)
                     .commit();
         }
+
+        // Keep screen on for this activity:
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Get user's name:
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, MODE_PRIVATE);
@@ -149,7 +153,7 @@ public class LinkActivity extends ActionBarActivity {
                         BluetoothAdapter.getDefaultAdapter().setName(BLUETOOTH_COLDNAME);
                     }
                 }
-            }, 15 * 1000);
+            }, 30 * 1000);
         }
     };
 
