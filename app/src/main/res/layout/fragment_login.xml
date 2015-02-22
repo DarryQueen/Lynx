@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:hint="first and last"
+            android:hint="You should know."
             android:paddingBottom="15dp"
             android:lines="1"
             android:maxLines="1"
@@ -39,7 +39,7 @@
             android:layout_weight="0"
             android:lines="1"
             android:maxLines="1"
-            android:hint="company name"
+            android:hint="NSA?"
             android:width="135dp"
             android:singleLine="true"
             android:inputType="text"/>
