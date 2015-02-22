@@ -9,12 +9,12 @@
     android:theme="@android:style/Theme.NoTitleBar"
     tools:context=".MainActivity$PlaceholderFragment">
     <TextView
+        android:id="@+id/textview_hello"
         android:layout_centerHorizontal="true"
         android:paddingTop="15dp"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:textSize="21dp"
-        android:text="Hello, Diane!"
         android:gravity="center"
         android:textColor="#FFFFFF"
         />

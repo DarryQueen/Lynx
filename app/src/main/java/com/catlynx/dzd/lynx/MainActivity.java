@@ -1,28 +1,18 @@
 package com.catlynx.dzd.lynx;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-
-import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
-import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
-import com.catlynx.dzd.lynx.bluetoothlink.SocketMessenger;
-import com.catlynx.dzd.lynx.handshakerdetector.HandShakeDetector;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
     public static final String PREFS_NAME = "com.dzd.lynx.PREFS_FILES";
@@ -93,6 +83,15 @@ public class MainActivity extends ActionBarActivity {
                     nextActivity();
                 }
             });
+
+            // Get user's name:
+            SharedPreferences settings = getActivity().getSharedPreferences(
+                    MainActivity.PREFS_NAME, MODE_PRIVATE);
+            String name = settings.getString(MainActivity.USER_NAME, "John Doe");
+
+            TextView helloText = (TextView) rootView.findViewById(R.id.textview_hello);
+            helloText.setText("Hello, " + name.split(" ")[0] + "!");
+
             return rootView;
         }
 
