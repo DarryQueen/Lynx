@@ -52,7 +52,7 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
 
         public void run() {
             byte[] buffer = new byte[1024];
-            int bytes;
+            int bytes = 0;
 
             // Keep listening to the InputStream until an exception occurs:
             while (true) {
