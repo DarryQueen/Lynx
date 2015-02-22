@@ -2,6 +2,7 @@ package com.catlynx.dzd.lynx;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -53,13 +54,19 @@ public class LinkActivity extends ActionBarActivity {
                     .commit();
         }
 
-        mDetector = new HandShakeDetector(this, 5, 200, shakeCallback);
-        BluetoothAdapter.getDefaultAdapter().enable();
+        // Get user's name:
+        SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME, MODE_PRIVATE);
+        String name = settings.getString(MainActivity.USER_NAME, "John Doe");
 
+        // Set up shake detection;
+        mDetector = new HandShakeDetector(this, 5, 200, shakeCallback);
         isShaking = false;
+
+        // Set up Bluetooth:
+        BluetoothAdapter.getDefaultAdapter().enable();
         userBluetoothName = BluetoothAdapter.getDefaultAdapter().getName();
 
-        socketMessenger = new SocketMessenger("HELLO", mMessageListener);
+        socketMessenger = new SocketMessenger(name, mMessageListener);
         btLinker = new BluetoothLinker(BluetoothAdapter.getDefaultAdapter(),
                 socketMessenger);
         btSearcher = new BluetoothSearcher(this,
