@@ -16,7 +16,5 @@
         android:onClick="startButton_onClick"
         android:layout_alignParentBottom="true"
         />
-
-
-
+    
 </RelativeLayout>
