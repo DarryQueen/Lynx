@@ -15,12 +15,12 @@
         android:layout_height="wrap_content" />
 
     <ImageButton
+        android:id="@+id/button_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:src="@drawable/donebutton_unpressed"
         android:layout_centerHorizontal="true"
-        android:onClick="startButton_onClick"
         android:layout_alignParentBottom="true" />
     
 </RelativeLayout>
