@@ -2,25 +2,24 @@ package com.catlynx.dzd.lynx;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
 import com.catlynx.dzd.lynx.bluetoothlink.SocketMessenger;
 import com.catlynx.dzd.lynx.handshakerdetector.HandShakeDetector;
 
-import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,13 +39,17 @@ public class LinkActivity extends ActionBarActivity {
     private BluetoothLinker btLinker;
     private BluetoothSearcher btSearcher;
 
+    // UI fragment:
+    Fragment mFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_link);
         if (savedInstanceState == null) {
+            mFragment = new PlaceholderFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, mFragment)
                     .commit();
         }
 
@@ -77,7 +80,13 @@ public class LinkActivity extends ActionBarActivity {
     private SocketMessenger.MessageListener mMessageListener
             = new SocketMessenger.MessageListener() {
         @Override
-        public void receiveMessage(String message) {
+        public void receiveMessage(final String message) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((PlaceholderFragment) mFragment).updateConnections(message);
+                }
+            });
         }
     };
 
@@ -122,9 +131,12 @@ public class LinkActivity extends ActionBarActivity {
     };
 
     /**
-     * A placeholder fragment containing a simple view.
+     * A placeholder fragment containing a view with an adapter.
      */
     public static class PlaceholderFragment extends Fragment {
+        private List<String> mConnections = new LinkedList<String>();
+        private ListAdapter mAdapter;
+        private ListView mListView;
 
         public PlaceholderFragment() {
         }
@@ -133,7 +145,27 @@ public class LinkActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_link, container, false);
+
+            mAdapter = new ArrayAdapter<String>(
+                    getActivity().getApplicationContext(),
+                    R.layout.listview_item,
+                    R.id.user_item,
+                    mConnections
+            );
+
+            // Ratchet testing:
+            updateConnections("John Doe");
+            updateConnections("Jane Smith");
+
+            mListView = (ListView) rootView.findViewById(R.id.listview_mates);
+            mListView.setAdapter(mAdapter);
+
             return rootView;
+        }
+
+        public void updateConnections(String connection) {
+            mConnections.add(connection);
+            ((ArrayAdapter) mAdapter).notifyDataSetChanged();
         }
     }
 }
