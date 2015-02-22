@@ -16,7 +16,8 @@ import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
 import com.catlynx.dzd.lynx.bluetoothlink.SocketMessenger;
 import com.catlynx.dzd.lynx.handshakerdetector.HandShakeDetector;
-
+import android.content.Intent;
+import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
     // Check if the other device is "hot":
@@ -72,6 +73,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void startButton_onClick(View view) {
+        Intent intent = new Intent(this, LinkActivity.class);
+        startActivity(intent);
     }
 
     /**
