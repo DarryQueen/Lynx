@@ -8,6 +8,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 public class BluetoothLinker implements BluetoothSearcher.Callback {
@@ -115,8 +116,8 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
 
     // Thread to execute as guest:
     private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
+        private BluetoothSocket mmSocket;
+        private BluetoothDevice mmDevice;
 
         public ConnectThread(UUID uuid, BluetoothDevice device) {
             BluetoothSocket tmp = null;
@@ -135,6 +136,17 @@ public class BluetoothLinker implements BluetoothSearcher.Callback {
             try {
                 mmSocket.connect();
             } catch (IOException connectException) {
+                // Unable to connect; try workaround:
+                try {
+                    mmSocket = (BluetoothSocket) mmDevice.getClass()
+                            .getMethod("createInsecureRfcommSocket", new Class[]{int.class})
+                            .invoke(mmDevice, 1);
+                    mmSocket.connect();
+                } catch (NoSuchMethodException e) {
+                } catch (IllegalAccessException e) {
+                } catch (InvocationTargetException e) {
+                } catch (IOException e) {}
+
                 // Unable to connect; close the socket and get out:
                 try {
                     mmSocket.close();
