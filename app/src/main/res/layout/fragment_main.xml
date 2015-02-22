@@ -16,7 +16,7 @@
         android:src="@drawable/startbuttonsrc"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:onClick="startButton_onClick"
+        android:id="@+id/button_start"
     />
 
 </RelativeLayout>

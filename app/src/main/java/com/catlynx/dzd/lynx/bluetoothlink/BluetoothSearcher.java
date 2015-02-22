@@ -12,10 +12,19 @@ import android.util.Log;
  * This is the class that will search for the Bluetooth companion.
  */
 public class BluetoothSearcher {
+    private static final int RSSI_THRESHOLD = -65;
+
     private BluetoothAdapter mBluetoothAdapter;
     private Context mContext;
     private BluetoothSearcher.Callback cb;
     private BluetoothSearcher.PairChecker pc;
+
+    private BluetoothLinker.ParentListener mParentListener = new BluetoothLinker.ParentListener() {
+        @Override
+        public void endListen() {
+            stopListen();
+        }
+    };
 
     public BluetoothSearcher(Context context, BluetoothAdapter bluetoothAdapter,
                              BluetoothSearcher.Callback cb, BluetoothSearcher.PairChecker pc) {
@@ -25,8 +34,13 @@ public class BluetoothSearcher {
         this.pc = pc;
     }
 
+    public BluetoothLinker.ParentListener getParentListener() {
+        return mParentListener;
+    }
+
     // Before calling this, make sure discoverable is turned on.
     public void startListen() {
+        Log.d("bluetooth", "Starting bluetooth search...");
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         mBluetoothAdapter.cancelDiscovery();
         mBluetoothAdapter.startDiscovery();
@@ -34,8 +48,18 @@ public class BluetoothSearcher {
     }
 
     public void stopListen() {
-        mBluetoothAdapter.cancelDiscovery();
-        mContext.unregisterReceiver(mReceiver);
+        Log.d("bluetooth", "Stopping bluetooth search...");
+        if (mBluetoothAdapter != null) {
+            mBluetoothAdapter.cancelDiscovery();
+        }
+    }
+
+    public void kill() {
+        // Shut up.
+        try {
+            mContext.unregisterReceiver(mReceiver);
+        } catch (IllegalArgumentException e) {}
+        stopListen();
     }
 
     // Create a BroadcastReceiver for when devices are found:
@@ -49,13 +73,12 @@ public class BluetoothSearcher {
                 Log.d("bluetooth", device.getName() + " " + rssi);
                 if (pc.checkMates(device) && passesThreshold(rssi)) {
                     cb.mateFound(device);
-                    stopListen();
                 }
             }
         }
 
         private boolean passesThreshold(short rssi) {
-            return true;
+            return rssi >= RSSI_THRESHOLD;
         }
     };
 
