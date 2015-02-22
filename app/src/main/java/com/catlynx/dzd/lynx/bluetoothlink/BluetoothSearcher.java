@@ -14,10 +14,15 @@ import android.util.Log;
 public class BluetoothSearcher {
     private BluetoothAdapter mBluetoothAdapter;
     private Context mContext;
+    private BluetoothSearcher.Callback cb;
+    private BluetoothSearcher.PairChecker pc;
 
-    public BluetoothSearcher(Context context, BluetoothAdapter bluetoothAdapter) {
+    public BluetoothSearcher(Context context, BluetoothAdapter bluetoothAdapter,
+                             BluetoothSearcher.Callback cb, BluetoothSearcher.PairChecker pc) {
         this.mBluetoothAdapter = bluetoothAdapter;
         this.mContext = context;
+        this.cb = cb;
+        this.pc = pc;
     }
 
     // Before calling this, make sure discoverable is turned on.
@@ -41,15 +46,26 @@ public class BluetoothSearcher {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 short rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
 
-                if (passesThreshold(device, rssi)) {
-                    if (device.getName().contains("inWatch")) Log.d("bluetooth", "" + rssi);
+                Log.d("bluetooth", device.getName() + " " + rssi);
+                if (pc.checkMates(device) && passesThreshold(rssi)) {
+                    cb.mateFound(device);
                     stopListen();
                 }
             }
         }
 
-        private boolean passesThreshold(BluetoothDevice device, short rssi) {
-            return device.getName().contains("inWatch");
+        private boolean passesThreshold(short rssi) {
+            return true;
         }
     };
+
+    // Defines an interface that responds to when a mate is found:
+    public static interface Callback {
+        void mateFound(BluetoothDevice device);
+    }
+
+    // Defines an interface that checks if a device is pairable:
+    public static interface PairChecker {
+        boolean checkMates(BluetoothDevice device);
+    }
 }

@@ -1,6 +1,7 @@
 package com.catlynx.dzd.lynx;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -10,13 +11,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
 import com.catlynx.dzd.lynx.handshakerdetector.HandShakeDetector;
 
 
 public class MainActivity extends ActionBarActivity {
+    // Check if the other device is "hot":
+    private BluetoothSearcher.PairChecker pairChecker = new BluetoothSearcher.PairChecker() {
+        @Override
+        public boolean checkMates(BluetoothDevice device) {
+            return device.getName() != null && device.getName().contains("inWatch");
+        }
+    };
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -28,8 +36,11 @@ public class MainActivity extends ActionBarActivity {
 
         HandShakeDetector detector = new HandShakeDetector(this, 5, 200, null);
         BluetoothAdapter.getDefaultAdapter().enable();
-        BluetoothSearcher btLinker = new BluetoothSearcher(this, BluetoothAdapter.getDefaultAdapter());
-        btLinker.startListen();
+
+        BluetoothLinker btLinker = new BluetoothLinker(BluetoothAdapter.getDefaultAdapter());
+        BluetoothSearcher btSearcher = new BluetoothSearcher(this,
+                BluetoothAdapter.getDefaultAdapter(), btLinker, pairChecker);
+        btSearcher.startListen();
     }
 
 
