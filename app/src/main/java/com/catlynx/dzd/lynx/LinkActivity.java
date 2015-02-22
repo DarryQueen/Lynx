@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothLinker;
 import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
@@ -182,6 +183,7 @@ public class LinkActivity extends ActionBarActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Toast.makeText(getActivity(), "New friends!", Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                 }
             });
