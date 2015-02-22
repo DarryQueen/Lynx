@@ -8,28 +8,50 @@
     android:background="@drawable/login_background"
     tools:context="com.catlynx.dzd.lynx.LoginActivity$PlaceholderFragment" >
 
-    <EditText
-        android:id="@+id/login_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:hint="first and last"
-        android:inputType="text" />
+        android:gravity="bottom|center"
+        android:layout_gravity="center_vertical"
+        android:paddingTop="83dp"
+        android:paddingLeft="70dp"
+        android:paddingBottom="17dp"
+        android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/login_company"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:hint="company name"
-        android:inputType="text" />
+        <EditText
+            android:id="@+id/login_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="first and last"
+            android:paddingBottom="15dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:width="135dp"
+            android:singleLine="true"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/login_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_weight="0"
+            android:lines="1"
+            android:maxLines="1"
+            android:hint="company name"
+            android:width="135dp"
+            android:singleLine="true"
+            android:inputType="text"/>
+
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/loginbutton_unpressed"
+        android:src="@drawable/loginbuttonsrc"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
 
