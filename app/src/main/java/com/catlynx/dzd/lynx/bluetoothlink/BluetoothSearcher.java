@@ -53,7 +53,10 @@ public class BluetoothSearcher {
     }
 
     public void kill() {
-        mContext.unregisterReceiver(mReceiver);
+        // Shut up.
+        try {
+            mContext.unregisterReceiver(mReceiver);
+        } catch (IllegalArgumentException e) {}
         stopListen();
     }
 
