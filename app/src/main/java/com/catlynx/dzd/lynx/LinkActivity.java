@@ -20,6 +20,7 @@ import com.catlynx.dzd.lynx.bluetoothlink.BluetoothSearcher;
 import com.catlynx.dzd.lynx.bluetoothlink.SocketMessenger;
 import com.catlynx.dzd.lynx.handshakerdetector.HandShakeDetector;
 
+import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,7 +56,7 @@ public class LinkActivity extends ActionBarActivity {
         isShaking = false;
         userBluetoothName = BluetoothAdapter.getDefaultAdapter().getName();
 
-        socketMessenger = new SocketMessenger("HELLO", null);
+        socketMessenger = new SocketMessenger("HELLO", mMessageListener);
         btLinker = new BluetoothLinker(BluetoothAdapter.getDefaultAdapter(),
                 socketMessenger);
         btSearcher = new BluetoothSearcher(this,
@@ -71,6 +72,14 @@ public class LinkActivity extends ActionBarActivity {
         btSearcher.kill();
         socketMessenger.kill();
     }
+
+    // React to a new mate:
+    private SocketMessenger.MessageListener mMessageListener
+            = new SocketMessenger.MessageListener() {
+        @Override
+        public void receiveMessage(String message) {
+        }
+    };
 
     // Check if the other device is "hot":
     private BluetoothSearcher.PairChecker pairChecker = new BluetoothSearcher.PairChecker() {

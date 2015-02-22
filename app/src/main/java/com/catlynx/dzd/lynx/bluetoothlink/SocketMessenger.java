@@ -3,12 +3,9 @@ package com.catlynx.dzd.lynx.bluetoothlink;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 
 public class SocketMessenger implements BluetoothLinker.SocketHandler {
     private String mMessage;
@@ -73,6 +70,8 @@ public class SocketMessenger implements BluetoothLinker.SocketHandler {
                     if (bytes > 0) {
                         String message = new String(buffer, 0, bytes);
                         Log.d("bluetooth", "Successfully read message \"" + message + "\"");
+
+                        mMessageListener.receiveMessage(message);
                         cancel();
                     }
                 } catch (IOException e) {
