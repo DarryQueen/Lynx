@@ -2,7 +2,7 @@
 Professional Networking with Just a Handshake.  
 Second-place winner at the 2015 Berkeley #CampusInWatch hackathon!
 
-2nd Place at the InWatchZ@Berkeley Hackathon 2015!
+####Lynx received 2nd Place at the InWatchZ@Berkeley Hackathon 2015!
 
 ## Description
 **Lynx** is a physical social network built for the InWatchZ smartwatch, providing automatic professional networking with every handshake. Lynx defines and listens for a physical handshake from the wrist, triggering a callback the Bluetooth libraries. On a high level, Lynx seeks to automate professional networking by programmatically exchanging contact information. This is particularly useful for smart watches, providing an unintrusive way to organize and keep in touch with professional connections.
