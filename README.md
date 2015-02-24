@@ -1,5 +1,6 @@
 # Lynx
-By Diane, Zekun, and Darren.
+Professional Networking with Just a Handshake.  
+Second-place winner at the 2015 Berkeley #CampusInWatch hackathon!
 
 ## Description
 **Lynx** is a physical social network built for the InWatchZ smartwatch. Lynx defines and listens for a physical handshake from the wrist, triggering a callback the Bluetooth libraries. On a high level, Lynx seeks to automate professional networking by programmatically exchanging contact information. This is particularly useful for smart watches, providing an unintrusive way to organize and keep in touch with professional connections.
@@ -23,3 +24,7 @@ The UI is self-explanatory; it helps to integrate the above features and gives t
 4. Push to the branch (`git push origin my-new-feature`).
 5. Create new Pull Request.
 6. Darren eats you alive on code review.
+
+## Authors
+Written by Diane, Zekun, and Darren at the 2015 #CampusInWatch hackathon at UC Berkeley.  
+If you want to support us, please hire us! Or just contribute by pushing code!
