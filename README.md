@@ -1,14 +1,18 @@
 # Lynx
+####Lynx received second place at the 2015 Berkeley #CampusInWatch hackathon!
 Professional Networking with Just a Handshake.  
-Second-place winner at the 2015 Berkeley #CampusInWatch hackathon!
+Created by Diane Wang, Darren Zhao, Zekun Wang
 
 ## Description
-**Lynx** is a physical social network built for the InWatchZ smartwatch. Lynx defines and listens for a physical handshake from the wrist, triggering a callback the Bluetooth libraries. On a high level, Lynx seeks to automate professional networking by programmatically exchanging contact information. This is particularly useful for smart watches, providing an unintrusive way to organize and keep in touch with professional connections.
+**Lynx** is a physical social network built for the InWatchZ smartwatch, providing automatic professional networking with every handshake. Lynx defines and listens for a physical handshake from the wrist, triggering a callback the Bluetooth libraries. On a high level, Lynx seeks to automate professional networking by programmatically exchanging contact information. This is particularly useful for smart watches, providing an unintrusive way to organize and keep in touch with professional connections.
 
 Lynx is composed of three components: the handshake, Bluetooth, and UI.
 The handshake detector uses gyroscopes and the accelerometer to define a handshake past a threshold for angle and acceleration.
 This sends a callback to the Bluetooth module, which "heats up" the current device for 15 seconds and scans for other "hot" devices. Once one is found within a reasonable distance (using signal strength), the device attempts to establish a connection and sends a predefined string.
 The UI is self-explanatory; it helps to integrate the above features and gives the user a way to interact with the app.
+
+##Overview
+![lynx_overview](https://cloud.githubusercontent.com/assets/6895346/6344040/4767b458-bba7-11e4-9c32-12a8d8678f8d.jpg)
 
 ## Screenshots
 ![lynx_layouts-01](https://cloud.githubusercontent.com/assets/5403584/6320271/0774d232-ba8e-11e4-9ef0-6f1b7cf69a1f.png)
